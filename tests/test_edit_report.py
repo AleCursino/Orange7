@@ -10,7 +10,11 @@ class TestEditReport:
         menu_page.click_reports_btn()
 
         report_list = ReportListPage(driver=menu_page.driver)
-        result = report_list.edit_report('QA Report')
+        result = report_list.edit_report('Jobs Report')
         assert result, "Erro na edição do report!"
+
+        #pós-condição
+        menu_page.click_reports_btn()
+        report_list.delete_report('Jobs Report')
 
 

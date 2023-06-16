@@ -10,5 +10,5 @@ class TestEditReport:
         menu_page.click_reports_btn()
 
         report_list = ReportListPage(driver=menu_page.driver)
-        result = report_list.delete_report('QA Report')
+        result = report_list.delete_report('Jobs Report')
         assert result, "Erro ao excluir o report!"

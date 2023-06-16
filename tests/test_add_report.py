@@ -2,10 +2,12 @@ import time
 
 from pages.AddReportPage import AddReportPage
 from pages.MenuPage import MenuPage
+from pages.ReportListPage import ReportListPage
 
 
 class TestAddReport:
-    report_name = 'Jobs Report4'
+
+    report_name = 'Jobs Report'
     display_field = 'Job'
 
     def test_add_new_report(self, efetuar_login):
@@ -18,3 +20,8 @@ class TestAddReport:
         time.sleep(5)
         response = new_report.verify_details_new_report(self.report_name)
         assert response, "Report não encontrado"
+
+        # pós-condição
+        menu_page.click_reports_btn()
+        new_report_list = ReportListPage(driver=menu_page.driver)
+        new_report_list.delete_report(self.report_name)

@@ -44,5 +44,7 @@ def add_new_report(efetuar_login):
     menu_page.click_reports_btn()
     new_report = AddReportPage(driver=menu_page.driver)
     new_report.click_add_report_btn()
-    new_report.add_new_report('QA Report', 'Job')
+    new_report.add_new_report('Jobs Report', 'Job')
     yield new_report
+
+

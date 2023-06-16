@@ -24,13 +24,13 @@ class AddReportPage(PageObject):
     def click_add_report_btn(self):
         self.driver.find_element(By.XPATH, self.xpath_add_report_btn).click()
 
-    def select_display_fields_item(self, item_to_be_select='Jobs'):
+    def select_display_fields_item(self, item_to_be_select='Job'):
         grid_items = self.driver.find_elements(By.CSS_SELECTOR, self.css_selection_display_fields)
         time.sleep(2)
         for item in grid_items:
             if item.find_element(By.CLASS_NAME, self.class_label_display).text == 'Select Display Field Group':
                 item.find_element(By.CLASS_NAME, self.class_dropdown_display).click()
-                time.sleep(5)
+                time.sleep(2)
                 # Localizar o item específico no menu suspenso usando seu seletor
                 menu_items = item.find_elements(By.CSS_SELECTOR, self.att_dropdown_elements)
                 for menu_tem in menu_items:
@@ -43,16 +43,16 @@ class AddReportPage(PageObject):
 
     def click_plus_display_fields_btn(self):
         self.driver.find_element(By.CSS_SELECTOR, self. css_plus_display_btn).click()
+        # tempo de sleep so para ver que a opcão foi selecionada corretamente
         time.sleep(2)
 
     def fill_name_new_report(self, reportName='Jobs Report'):
         self.driver.find_element(By.CSS_SELECTOR, self.att_report_name_field).send_keys(reportName)
-        time.sleep(5)
 
     def click_save_btn(self):
         self.driver.find_element(By.CLASS_NAME, self.class_save_button).click()
 
-    def add_new_report(self, reportName='Jobs Report', item_to_be_select='Jobs'):
+    def add_new_report(self, reportName='Jobs Report', item_to_be_select='Job'):
         self.fill_name_new_report(reportName)
         self.select_display_fields_item(item_to_be_select)
         self.click_plus_display_fields_btn()

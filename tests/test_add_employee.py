@@ -8,9 +8,6 @@ from pages.MenuPage import MenuPage
 
 class TestNewEmployee:
 
-    #fazer login
-    #entrar na página do addemployee
-    #preencher os campos e salvar
     firstname = 'Maria'
     middlename = 'Bernadete'
     lastname = 'Alencar'

@@ -24,10 +24,6 @@ class PageObject:
     def close(self):
         self.driver.quit()
 
-    def is_page(self, url):
-        is_url = self.driver.current_url == url
-        return is_url
-
     def click_yes_delete_btn_modal(self):
         option = 'Yes, Delete'
         options_popup_delete = self.driver.find_elements(By.CLASS_NAME, self.class_option_popup_delete)

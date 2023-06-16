@@ -21,8 +21,9 @@ class EmployeeListPage(PageObject):
     class_employee_name = 'orangehrm-edit-employee-name'
     class_label = 'oxd-label'
     class_input = 'oxd-input--active'
-    class_save_buttom = 'oxd-button'
+    class_save_button = 'oxd-button'
     class_grid = 'oxd-grid-3'
+    class_input_nickname = 'oxd-input'
 
     def __init__(self, driver):
         super().__init__(driver=driver)
@@ -82,7 +83,6 @@ class EmployeeListPage(PageObject):
         all_employees = self.driver.find_elements(By.CLASS_NAME, self.class_table_card)
         employee_list = []
 
-        print(len(all_employees))
         for i in range(len(all_employees)):
             css_first_name_element = '#app > div.oxd-layout > div.oxd-layout-container > div.oxd-layout-context > div > div.orangehrm-paper-container > div.orangehrm-container > div > div.oxd-table-body > div:nth-child('+ str(i+1) +') > div > div:nth-child(3) > div'
             first_name_element = self.driver.find_element(By.CSS_SELECTOR, css_first_name_element)
@@ -92,6 +92,9 @@ class EmployeeListPage(PageObject):
         employee_list_upper = [x.upper() for x in employee_list]
         employee_list_copy_upper = [x.upper() for x in employee_list_copy]
         employee_list_copy_upper.sort()
+        print(f'\nLista ordenada pela aplicação: {employee_list_upper}')
+        print(f'Lista ordenada pelo código como resultado esperado: {employee_list_copy_upper}')
+
 
         if employee_list_upper == employee_list_copy_upper:
             return True
@@ -129,27 +132,27 @@ class EmployeeListPage(PageObject):
             # validando que na tela de editar é o nome do funcionário correto
             if self.driver.find_element(By.CLASS_NAME, self.class_employee_name).text == firstname + ' ' + lastname:
                 time.sleep(3)
-                grid_items = self.driver.find_elements(By.CLASS_NAME, 'oxd-grid-3')
+                grid_items = self.driver.find_elements(By.CLASS_NAME, self.class_grid)
                 time.sleep(5)
                 for item in grid_items:
-                    if item.find_element(By.CLASS_NAME, 'oxd-label').text == "Nickname":
+                    if item.find_element(By.CLASS_NAME, self.class_label).text == "Nickname":
                         time.sleep(2)
-                        item.find_element(By.CLASS_NAME, "oxd-input").send_keys(
-                            Keys.BACKSPACE * len(item.find_element(By.CLASS_NAME, "oxd-input").get_attribute("value")))
-                        item.find_element(By.CLASS_NAME, "oxd-input").send_keys(nickname)
+                        item.find_element(By.CLASS_NAME, self.class_input_nickname).send_keys(
+                            Keys.BACKSPACE * len(item.find_element(By.CLASS_NAME, self.class_input_nickname).get_attribute("value")))
+                        item.find_element(By.CLASS_NAME, self.class_input_nickname).send_keys(nickname)
                         time.sleep(3)
-                        self.driver.find_element(By.CLASS_NAME, self.class_save_buttom).click()
+                        self.driver.find_element(By.CLASS_NAME, self.class_save_button).click()
                         time.sleep(3)
                 return self.verify_edit_success(nickname)
             else:
                 return False
 
     def verify_edit_success(self, nickname):
-        grid_items = self.driver.find_elements(By.CLASS_NAME, 'oxd-grid-3')
+        grid_items = self.driver.find_elements(By.CLASS_NAME, self.class_grid)
         time.sleep(5)
         for item in grid_items:
-            if item.find_element(By.CLASS_NAME, 'oxd-label').text == 'Nickname':
-                nick2 = item.find_element(By.CLASS_NAME, "oxd-input").get_attribute("value")
+            if item.find_element(By.CLASS_NAME, self.class_label).text == 'Nickname':
+                nick2 = item.find_element(By.CLASS_NAME, self.class_input_nickname).get_attribute("value")
                 if nickname == nick2:
                     return True
                 else:

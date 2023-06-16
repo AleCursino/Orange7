@@ -5,7 +5,6 @@ from pages.PageObject import PageObject
 
 class AddEmployeePage(PageObject):
 
-    #url = 'https://opensource-demo.orangehrmlive.com/web/index.php/pim/addEmployee'
     att_first_name = '[name="firstName"]'
     att_middle_name = '[name="middleName"]'
     att_last_name = '[name="lastName"]'

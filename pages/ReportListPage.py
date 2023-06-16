@@ -20,7 +20,12 @@ class ReportListPage(PageObject):
     att_dropdown_elements = '[role="option"]'
     class_save_button = 'orangehrm-left-space'
     xpath_reports_btn = '//*[@id="app"]/div[1]/div[1]/header/div[2]/nav/ul/li[4]'
-    class_delete_buttom = 'bi-trash'
+    class_delete_button = 'bi-trash'
+    class_header_col = 'oxd-table-header-cell'
+    class_btn_sort = 'oxd-table-header-sort'
+    class_component_sort = 'oxd-table-header-sort-dropdown-item'
+    class_grid_action = 'oxd-table-cell-actions'
+    class_edit_icon = 'bi-pencil-fill'
 
     def __init__(self, driver):
         super().__init__(driver=driver)
@@ -48,12 +53,12 @@ class ReportListPage(PageObject):
             return False
 
     def order_report_list_order_desc(self, column_name='Name', order_type='Decending'):
-        row_elements = self.driver.find_elements(By.CLASS_NAME, 'oxd-table-header-cell')
+        row_elements = self.driver.find_elements(By.CLASS_NAME, self.class_header_col)
         for element in row_elements:
             if element.text == column_name:
-                element.find_element(By.CLASS_NAME, 'oxd-table-header-sort').click()
+                element.find_element(By.CLASS_NAME, self.class_btn_sort).click()
                 time.sleep(4)
-                menu_items = self.driver.find_elements(By.CLASS_NAME, 'oxd-table-header-sort-dropdown-item')
+                menu_items = self.driver.find_elements(By.CLASS_NAME, self.class_component_sort)
                 for order_item in menu_items:
                     if order_item.text == order_type:
                         order_item.click()
@@ -63,21 +68,15 @@ class ReportListPage(PageObject):
     def check_order_name_desc(self):
         all_reports = self.driver.find_elements(By.CLASS_NAME, self.class_table_card)
         reports_list = []
-
-        print(len(all_reports))
         for i in range(len(all_reports)):
             css_name_element = '#app > div.oxd-layout > div.oxd-layout-container > div.oxd-layout-context > div > div.orangehrm-paper-container > div.orangehrm-container > div > div.oxd-table-body > div:nth-child('+ str(i+1) +') > div > div:nth-child(2) > div'
             name_element = self.driver.find_element(By.CSS_SELECTOR, css_name_element)
             reports_list.append(name_element.text)
 
-        print(reports_list)
         reports_list_copy = reports_list.copy()
         reports_list_upper = [x.upper() for x in reports_list]
-        print(reports_list_upper)
         reports_list_copy_upper = [x.upper() for x in reports_list_copy]
-        print(reports_list_copy_upper)
         reports_list_copy_upper.sort(reverse=True)
-        print(reports_list_copy_upper)
 
         if reports_list_upper == reports_list_copy_upper:
             return True
@@ -113,9 +112,9 @@ class ReportListPage(PageObject):
         if not found_report:
             return False
         else:
-            grid_actions = self.driver.find_elements(By.CLASS_NAME, 'oxd-table-cell-actions')
+            grid_actions = self.driver.find_elements(By.CLASS_NAME, self.class_grid_action)
             for item in grid_actions:
-                item.find_element(By.CLASS_NAME, 'bi-pencil-fill').click()
+                item.find_element(By.CLASS_NAME, self.class_edit_icon).click()
                 time.sleep(3)
             #validar que é estamos editando o relatório correto
             if self.driver.find_element(By.CLASS_NAME, self.class_edit_page).text == 'Edit Report':
@@ -135,14 +134,13 @@ class ReportListPage(PageObject):
         if not found_report:
             return False
         else:
-            grid_actions = self.driver.find_elements(By.CLASS_NAME, 'oxd-table-cell-actions')
+            grid_actions = self.driver.find_elements(By.CLASS_NAME, self.class_grid_action)
             for item in grid_actions:
-                item.find_element(By.CLASS_NAME, 'bi-pencil-fill').click()
+                item.find_element(By.CLASS_NAME, self.class_edit_icon).click()
                 time.sleep(3)
             # validar que é estamos editando o relatório correto
             if self.driver.find_element(By.CLASS_NAME, self.class_edit_page).text == 'Edit Report':
                 option = self.get_include_value()
-                print(option)
                 if option == include_option:
                     return True
                 else:
@@ -153,7 +151,7 @@ class ReportListPage(PageObject):
         if not found_report:
             return False
         else:
-            self.driver.find_element(By.CLASS_NAME, self.class_delete_buttom).click()
+            self.driver.find_element(By.CLASS_NAME, self.class_delete_button).click()
             time.sleep(3)
 
             super().click_yes_delete_btn_modal()
